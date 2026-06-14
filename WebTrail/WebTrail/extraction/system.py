@@ -73,7 +73,7 @@ class SystemExtractor(BaseExtractor):
             for line in out.split('\n'):
                 line = line.strip()
                 if line.startswith("\u8bb0\u5f55\u540d\u79f0"):
-                    rec['name'] = line.split(":", 1)[1].strip()
+                    rec = {'name': line.split(":", 1)[1].strip()}
                 elif line.startswith("\u8bb0\u5f55\u7c7b\u578b"):
                     rec['type'] = line.split(":", 1)[1].strip()
                 elif line.startswith("\u751f\u5b58\u65f6\u95f4"):

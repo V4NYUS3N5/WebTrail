@@ -3,6 +3,7 @@ Chromium 内核浏览器提取器 (Chrome / Edge / Brave / Opera / 360)
 """
 import os
 import json
+import logging
 from datetime import datetime
 from typing import List
 
@@ -10,6 +11,8 @@ from config import CHROMIUM_BROWSERS
 from models import Trace
 from utils import chrome_time_to_dt
 from extraction.base import BaseExtractor
+
+_log = logging.getLogger("WebTrail.extraction.chromium")
 
 
 class ChromiumExtractor(BaseExtractor):
@@ -49,7 +52,7 @@ class ChromiumExtractor(BaseExtractor):
             if keys:
                 return keys
         except Exception:
-            pass
+            _log.warning("Local State JSON 解析失败: %s", local_state, exc_info=True)
         return profiles
 
     # ---- 各维度提取 ----
@@ -71,18 +74,18 @@ class ChromiumExtractor(BaseExtractor):
                     content=(title or url)[:120],
                 ))
         except Exception:
-            pass
+            _log.warning("历史记录查询异常 (%s): %s", browser_name, profile_path, exc_info=True)
         finally:
             conn.close()
-            try: os.remove(tmp)
-            except OSError: pass
+            if tmp:
+                os.remove(tmp)
         return results
 
     def _bookmarks(self, browser_name: str, profile_path: str) -> List[Trace]:
+        results: List[Trace] = []
         bm_file = os.path.join(profile_path, "Bookmarks")
         if not os.path.exists(bm_file):
-            return []
-        results: List[Trace] = []
+            return results
         try:
             with open(bm_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
@@ -95,7 +98,7 @@ class ChromiumExtractor(BaseExtractor):
                             content=name[:80],
                         ))
         except Exception:
-            pass
+            _log.warning("书签解析失败 (%s): %s", browser_name, bm_file, exc_info=True)
         return results
 
     @staticmethod
@@ -133,11 +136,11 @@ class ChromiumExtractor(BaseExtractor):
                         content=f"{filename[:60]} {size_mb} {state_map.get(state, '')}"
                     ))
         except Exception:
-            pass
+            _log.warning("下载记录查询异常 (%s): %s", browser_name, profile_path, exc_info=True)
         finally:
             conn.close()
-            try: os.remove(tmp)
-            except OSError: pass
+            if tmp:
+                os.remove(tmp)
         return results
 
     def _cookies(self, browser_name: str, profile_path: str) -> List[Trace]:
@@ -160,11 +163,11 @@ class ChromiumExtractor(BaseExtractor):
                     content=f"{host_key} ({cnt}条)",
                 ))
         except Exception:
-            pass
+            _log.warning("Cookie 查询异常 (%s): %s", browser_name, db, exc_info=True)
         finally:
             conn.close()
-            try: os.remove(tmp)
-            except OSError: pass
+            if tmp:
+                os.remove(tmp)
         return results
 
     def _logins(self, browser_name: str, profile_path: str) -> List[Trace]:
@@ -186,11 +189,11 @@ class ChromiumExtractor(BaseExtractor):
                         content=f"{origin_url[:100]} ({cnt}条)",
                     ))
         except Exception:
-            pass
+            _log.warning("登录凭据查询异常 (%s): %s", browser_name, profile_path, exc_info=True)
         finally:
             conn.close()
-            try: os.remove(tmp)
-            except OSError: pass
+            if tmp:
+                os.remove(tmp)
         return results
 
     def _sessions(self, browser_name: str, profile_path: str) -> List[Trace]:
@@ -231,7 +234,7 @@ class ChromiumExtractor(BaseExtractor):
                                 name = json.load(f).get('name', name)
                             break
                         except Exception:
-                            pass
+                            _log.warning("扩展 manifest 解析失败: %s", mf, exc_info=True)
                 mtime = datetime.fromtimestamp(os.path.getmtime(ext_path))
                 results.append(Trace(
                     type="扩展", source=browser_name, time=mtime,

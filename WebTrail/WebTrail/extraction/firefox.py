@@ -3,12 +3,15 @@ Firefox 浏览器提取器
 """
 import os
 import json
+import logging
 from typing import List
 
 from config import FIREFOX_PROFILES_DIR
 from models import Trace
 from utils import firefox_time_to_dt
 from extraction.base import BaseExtractor
+
+_log = logging.getLogger("WebTrail.extraction.firefox")
 
 
 class FirefoxExtractor(BaseExtractor):
@@ -57,11 +60,12 @@ class FirefoxExtractor(BaseExtractor):
                     content=(title or url)[:120],
                 ))
         except Exception:
-            pass
+            _log.warning("Firefox 历史记录查询异常 (%s): %s", profile_name, places_db, exc_info=True)
         finally:
             conn.close()
-            try: os.remove(tmp)
-            except OSError: pass
+            if tmp:
+                try: os.remove(tmp)
+                except OSError: pass
         return results
 
     def _bookmarks(self, profile_name: str, places_db: str) -> List[Trace]:
@@ -83,11 +87,12 @@ class FirefoxExtractor(BaseExtractor):
                     content=(title or url)[:80],
                 ))
         except Exception:
-            pass
+            _log.warning("Firefox 书签查询异常 (%s): %s", profile_name, places_db, exc_info=True)
         finally:
             conn.close()
-            try: os.remove(tmp)
-            except OSError: pass
+            if tmp:
+                try: os.remove(tmp)
+                except OSError: pass
         return results
 
     def _downloads(self, profile_name: str, places_db: str) -> List[Trace]:
@@ -110,11 +115,12 @@ class FirefoxExtractor(BaseExtractor):
                     content=source_url[:80],
                 ))
         except Exception:
-            pass
+            _log.warning("Firefox 下载记录查询异常 (%s): %s", profile_name, places_db, exc_info=True)
         finally:
             conn.close()
-            try: os.remove(tmp)
-            except OSError: pass
+            if tmp:
+                try: os.remove(tmp)
+                except OSError: pass
         return results
 
     def _cookies(self, profile_name: str, cookies_db: str) -> List[Trace]:
@@ -131,11 +137,12 @@ class FirefoxExtractor(BaseExtractor):
                     content=f"{host} ({cnt}条)",
                 ))
         except Exception:
-            pass
+            _log.warning("Firefox Cookie 查询异常 (%s): %s", profile_name, cookies_db, exc_info=True)
         finally:
             conn.close()
-            try: os.remove(tmp)
-            except OSError: pass
+            if tmp:
+                try: os.remove(tmp)
+                except OSError: pass
         return results
 
     def _logins(self, profile_name: str, logins_json: str) -> List[Trace]:
@@ -153,7 +160,7 @@ class FirefoxExtractor(BaseExtractor):
                     content=f"{host} ({cnt}条)",
                 ))
         except Exception:
-            pass
+            _log.warning("Firefox 登录凭据解析失败 (%s): %s", profile_name, logins_json, exc_info=True)
         return results
 
     def _extensions(self, profile_name: str, ext_json: str) -> List[Trace]:
@@ -169,5 +176,5 @@ class FirefoxExtractor(BaseExtractor):
                         content=name,
                     ))
         except Exception:
-            pass
+            _log.warning("Firefox 扩展解析失败 (%s): %s", profile_name, ext_json, exc_info=True)
         return results

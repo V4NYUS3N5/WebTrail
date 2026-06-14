@@ -2,23 +2,43 @@
 WebTrail 浏览器痕迹取证报告
 ================================================================================
 
-共 1096 条痕迹 (1032 条带时间戳, 64 条统计信息)
+共 1135 条痕迹 (1073 条带时间戳, 62 条统计信息)
 
 --------------------------------------------------------------------------------
-2026-06-13 20:18:16  会话 [Edge]  Session_13425825316471247 (7.1KB)
-2026-06-13 20:18:10  会话 [Chrome [Profile 1]]  Session_13425825814479274 (36.0KB)
-2026-06-13 20:03:38  扩展 [Chrome [Profile 1]]  __MSG_name__
-2026-06-13 20:03:34  会话 [Chrome [Profile 1]]  Tabs_13425825814621209 (162.3KB)
-2026-06-13 19:55:17  会话 [Edge]  Tabs_13425825317401303 (338.0KB)
-2026-06-13 19:55:13  会话 [Edge]  Tabs_13425819639373327 (387.7KB)
-2026-06-13 19:55:13  会话 [Edge]  Session_13425819638635053 (455.1KB)
-2026-06-13 16:52:04  会话 [Chrome [Profile 1]]  Tabs_13425814251423650 (181.1KB)
-2026-06-13 16:52:04  会话 [Chrome [Profile 1]]  Session_13425814251282555 (94.9KB)
-2026-06-13 12:03:44  浏览历史 [Chrome [Profile 1]]  Upload files · V4NYUS3N5/WebTrail
-2026-06-13 12:03:42  浏览历史 [Chrome [Profile 1]]  WebTrail/WebTrail at main · V4NYUS3N5/WebTrail
-2026-06-13 12:03:39  浏览历史 [Chrome [Profile 1]]  V4NYUS3N5/WebTrail
-2026-06-13 12:03:36  浏览历史 [Chrome [Profile 1]]  GitHub
-2026-06-13 11:55:18  浏览历史 [Edge]  DeepSeek 开放平台
+2026-06-14 15:27:08  会话 [Edge]  Session_13425895281258852 (3.9KB)
+2026-06-14 15:21:21  会话 [Edge]  Tabs_13425895281336477 (327.5KB)
+2026-06-14 15:10:01  会话 [Edge]  Tabs_13425894537466676 (328.8KB)
+2026-06-14 15:10:01  会话 [Edge]  Session_13425894537407625 (16.1KB)
+2026-06-14 11:23:37  会话 [Chrome [Profile 1]]  Tabs_13425880895151191 (207.0KB)
+2026-06-14 11:23:37  会话 [Chrome [Profile 1]]  Session_13425880895016688 (84.6KB)
+2026-06-14 11:22:02  扩展 [Chrome [Profile 1]]  __MSG_name__
+2026-06-14 07:21:22  浏览历史 [Edge]  DeepSeek 开放平台
+2026-06-14 07:09:57  浏览历史 [Edge]  DeepSeek 开放平台
+2026-06-14 07:09:56  浏览历史 [Edge]  DeepSeek 开放平台
+2026-06-14 06:40:26  浏览历史 [Edge]  登录成功
+2026-06-14 06:40:25  浏览历史 [Edge]  上网认证
+2026-06-14 06:40:25  浏览历史 [Edge]  上网认证
+2026-06-14 03:23:28  浏览历史 [Chrome [Profile 1]]  WebTrail/README.md at main · V4NYUS3N5/WebTrail
+2026-06-14 03:23:18  浏览历史 [Chrome [Profile 1]]  Editing WebTrail/README.md at main · V4NYUS3N5/WebTrail
+2026-06-14 03:23:00  浏览历史 [Chrome [Profile 1]]  V4NYUS3N5/WebTrail
+2026-06-14 03:22:53  浏览历史 [Chrome [Profile 1]]  Processing your files…
+2026-06-14 03:22:42  Cookie [Chrome [Profile 1]]  github.com (6条)
+2026-06-14 03:22:38  Cookie [Chrome [Profile 1]]  .github.com (4条)
+2026-06-14 03:22:04  浏览历史 [Chrome [Profile 1]]  Upload files · V4NYUS3N5/WebTrail
+2026-06-14 03:21:47  浏览历史 [Chrome [Profile 1]]  WebTrail/WebTrail at main · V4NYUS3N5/WebTrail
+2026-06-14 03:21:39  浏览历史 [Chrome [Profile 1]]  GitHub
+2026-06-14 03:21:38  Cookie [Chrome [Profile 1]]  .bing.com (15条)
+2026-06-14 03:21:38  Cookie [Chrome [Profile 1]]  cn.bing.com (2条)
+2026-06-14 03:21:38  浏览历史 [Chrome [Profile 1]]  bing.com/ck/a?!&&p=df169fd0dd024703c417f685e18d941189105114cd9608519fee43aaebd67cf5JmltdHM9MTc4MTMwODgwMA&ptn=3&ver=2&hs
+2026-06-14 03:21:38  浏览历史 [Chrome [Profile 1]]  https://www.bing.com/ck/a?!&&p=df169fd0dd024703c417f685e18d941189105114cd9608519fee43aaebd67cf5JmltdHM9MTc4MTMwODgwMA&pt
+2026-06-14 03:21:38  Cookie [Chrome [Profile 1]]  www.bing.com (2条)
+2026-06-14 03:21:33  Cookie [Chrome [Profile 1]]  .google.com (19条)
+2026-06-14 03:21:32  Cookie [Chrome [Profile 1]]  accounts.google.com (7条)
+2026-06-14 03:20:03  浏览历史 [Edge]  登录成功
+2026-06-14 03:20:03  浏览历史 [Edge]  上网认证
+2026-06-13 20:30:30  会话 [Chrome [Profile 1]]  Tabs_13425825814621209 (186.7KB)
+2026-06-13 20:30:30  会话 [Chrome [Profile 1]]  Session_13425825814479274 (201.6KB)
+2026-06-13 15:41:11  浏览历史 [Edge]  玩机器钻粉福利_玩机器直播_玩机器丶Machine直播_玩机器CS2直播_玩机器斗鱼直播
 2026-06-13 11:48:29  浏览历史 [Edge]  作业详情
 2026-06-13 11:48:29  浏览历史 [Edge]  作业详情
 2026-06-13 11:48:27  浏览历史 [Edge]  https://mooc1.chaoxing.com/mooc-ans/mooc2/work/list?courseId=262291544&classId=144160879&cpi=411478284&enc=9595803ffc25c
@@ -45,7 +65,6 @@ WebTrail 浏览器痕迹取证报告
 2026-06-13 10:21:35  浏览历史 [Edge]  学习通 - 搜索
 2026-06-13 10:17:30  浏览历史 [Edge]  登录成功
 2026-06-13 10:17:29  浏览历史 [Edge]  上网认证
-2026-06-13 10:17:29  浏览历史 [Edge]  上网认证
 2026-06-13 09:01:02  浏览历史 [Edge]  作业详情
 2026-06-13 09:01:02  浏览历史 [Edge]  作业详情
 2026-06-13 09:00:58  浏览历史 [Edge]  作业详情
@@ -61,10 +80,9 @@ WebTrail 浏览器痕迹取证报告
 2026-06-13 08:56:19  浏览历史 [Edge]  个人空间
 2026-06-13 08:56:19  浏览历史 [Edge]  个人空间
 2026-06-13 08:56:17  浏览历史 [Edge]  学习通 - 搜索
-2026-06-13 08:51:53  浏览历史 [Chrome [Profile 1]]  WebTrail/README.md at main · V4NYUS3N5/WebTrail
-2026-06-13 08:51:47  浏览历史 [Chrome [Profile 1]]  Editing WebTrail/README.md at main · V4NYUS3N5/WebTrail
-2026-06-13 08:51:35  浏览历史 [Chrome [Profile 1]]  Processing your files…
 2026-06-13 08:50:58  浏览历史 [Chrome [Profile 1]]  github - 搜索
+2026-06-13 08:50:50  Cookie [Chrome [Profile 1]]  login.microsoftonline.com (1条)
+2026-06-13 08:50:50  Cookie [Chrome [Profile 1]]  www2.bing.com (1条)
 2026-06-13 08:47:43  下载 [Edge]  python-3.14.6-amd64.exe 29.3MB 已完成
 2026-06-13 08:47:21  浏览历史 [Edge]  Python Release Python 3.14.6 | Python.org
 2026-06-13 08:47:15  下载 [Edge]  python-manager-26.2.msix 44.3MB 已完成
@@ -92,6 +110,7 @@ WebTrail 浏览器痕迹取证报告
 2026-06-13 08:02:24  浏览历史 [Chrome [Profile 1]]  GitHub · Where software is built
 2026-06-13 08:02:05  浏览历史 [Chrome [Profile 1]]  GitHub · Where software is built
 2026-06-13 08:01:49  浏览历史 [Chrome [Profile 1]]  Sign in to GitHub · GitHub
+2026-06-13 08:01:48  Cookie [Chrome [Profile 1]]  .microsoft.com (2条)
 2026-06-13 07:56:28  浏览历史 [Chrome [Profile 1]]  Sign up for GitHub · GitHub
 2026-06-13 07:56:28  浏览历史 [Chrome [Profile 1]]  Sign up for GitHub · GitHub
 2026-06-13 07:56:25  浏览历史 [Chrome [Profile 1]]  登录 - Google 账号 !!可疑!!
@@ -99,6 +118,8 @@ WebTrail 浏览器痕迹取证报告
 2026-06-13 07:56:25  浏览历史 [Chrome [Profile 1]]  登录 - Google 账号 !!可疑!!
 2026-06-13 07:56:25  浏览历史 [Chrome [Profile 1]]  登录 - Google 账号 !!可疑!!
 2026-06-13 07:56:25  浏览历史 [Chrome [Profile 1]]  登录 - Google 账号 !!可疑!!
+2026-06-13 07:56:25  Cookie [Chrome [Profile 1]]  .google.com.sg (10条)
+2026-06-13 07:56:24  Cookie [Chrome [Profile 1]]  .youtube.com (11条)
 2026-06-13 07:56:04  浏览历史 [Chrome [Profile 1]]  验证身份 为了确保您的账号安全，Google 希望确认是您本人在操作 !!可疑!!
 2026-06-13 07:55:59  浏览历史 [Chrome [Profile 1]]  验证身份 为了确保您的账号安全，Google 希望确认是您本人在操作 !!可疑!!
 2026-06-13 07:55:56  浏览历史 [Chrome [Profile 1]]  登录 - Google 账号 !!可疑!!
@@ -110,8 +131,7 @@ WebTrail 浏览器痕迹取证报告
 2026-06-13 07:55:52  浏览历史 [Chrome [Profile 1]]  登录 - Google 账号 !!可疑!!
 2026-06-13 07:55:49  浏览历史 [Chrome [Profile 1]]  登录 - Google 账号 !!可疑!!
 2026-06-13 07:55:43  浏览历史 [Chrome [Profile 1]]  Sign in to GitHub · GitHub
-2026-06-13 07:55:40  浏览历史 [Chrome [Profile 1]]  bing.com/ck/a?!&&p=df169fd0dd024703c417f685e18d941189105114cd9608519fee43aaebd67cf5JmltdHM9MTc4MTMwODgwMA&ptn=3&ver=2&hs
-2026-06-13 07:55:40  浏览历史 [Chrome [Profile 1]]  https://www.bing.com/ck/a?!&&p=df169fd0dd024703c417f685e18d941189105114cd9608519fee43aaebd67cf5JmltdHM9MTc4MTMwODgwMA&pt
+2026-06-13 07:55:35  Cookie [Chrome [Profile 1]]  .translate-pa.googleapis.com (1条)
 2026-06-13 07:28:39  浏览历史 [Edge]  作业作答
 2026-06-13 07:28:39  浏览历史 [Edge]  作业作答
 2026-06-13 07:28:08  浏览历史 [Edge]  作业作答
@@ -177,13 +197,21 @@ WebTrail 浏览器痕迹取证报告
 2026-06-13 03:16:26  浏览历史 [Chrome [Profile 1]]  Bookmarks
 2026-06-13 02:37:29  浏览历史 [Edge]  豆包 - 字节跳动旗下 AI 智能助手
 2026-06-13 02:37:29  浏览历史 [Edge]  豆包 - 字节跳动旗下 AI 智能助手
+2026-06-13 02:36:46  Cookie [Chrome [Profile 1]]  .baidu.com (4条)
+2026-06-13 02:36:42  Cookie [Chrome [Profile 1]]  .miao.baidu.com (3条)
 2026-06-13 02:36:40  浏览历史 [Chrome [Profile 1]]  百度翻译_领先的AI大模型翻译_支持文本/文档/图片翻译
 2026-06-13 02:36:40  浏览历史 [Chrome [Profile 1]]  百度翻译_领先的AI大模型翻译_支持文本/文档/图片翻译
+2026-06-13 02:36:40  Cookie [Chrome [Profile 1]]  .fanyi.baidu.com (1条)
 2026-06-13 02:36:40  浏览历史 [Chrome [Profile 1]]  百度翻译_领先的AI大模型翻译_支持文本/文档/图片翻译
 2026-06-13 02:36:40  浏览历史 [Chrome [Profile 1]]  百度翻译-您的超级翻译伙伴（文本、文档翻译）
 2026-06-13 02:36:40  浏览历史 [Chrome [Profile 1]]  百度翻译-您的超级翻译伙伴（文本、文档翻译）
+2026-06-13 02:36:39  Cookie [Chrome [Profile 1]]  fanyi.baidu.com (2条)
 2026-06-13 02:36:37  浏览历史 [Chrome [Profile 1]]  百度翻译 - 搜索
 2026-06-13 02:36:37  浏览历史 [Chrome [Profile 1]]  百度翻译 - 搜索
+2026-06-13 02:36:03  Cookie [Chrome [Profile 1]]  .hm.baidu.com (2条)
+2026-06-13 02:35:58  Cookie [Chrome [Profile 1]]  .www.doubao.com (1条)
+2026-06-13 02:35:58  Cookie [Chrome [Profile 1]]  .doubao.com (2条)
+2026-06-13 02:35:57  Cookie [Chrome [Profile 1]]  www.doubao.com (1条)
 2026-06-13 02:35:57  浏览历史 [Chrome [Profile 1]]  豆包 - 字节跳动旗下 AI 智能助手
 2026-06-13 02:35:57  浏览历史 [Chrome [Profile 1]]  豆包 - 字节跳动旗下 AI 智能助手
 2026-06-13 02:35:54  浏览历史 [Chrome [Profile 1]]  豆包 - 搜索
@@ -339,10 +367,7 @@ WebTrail 浏览器痕迹取证报告
 2026-06-13 02:30:53  浏览历史 [Chrome [Profile 1]]  百度翻译_领先的AI大模型翻译_支持文本/文档/图片翻译
 2026-06-13 02:13:15  浏览历史 [Edge]  登录成功
 2026-06-13 02:13:14  浏览历史 [Edge]  上网认证
-2026-06-12 14:40:22  浏览历史 [Edge]  玩机器钻粉福利_玩机器直播_玩机器丶Machine直播_玩机器CS2直播_玩机器斗鱼直播
 2026-06-12 14:24:49  浏览历史 [Edge]  站内信 - 个人中心 - 斗鱼
-2026-06-12 14:12:55  浏览历史 [Edge]  登录成功
-2026-06-12 14:12:54  浏览历史 [Edge]  上网认证
 2026-06-12 06:44:21  浏览历史 [Edge]  仪表盘 - LittleSkin
 2026-06-12 06:30:17  浏览历史 [Edge]  我的衣柜 - LittleSkin
 2026-06-12 06:29:31  浏览历史 [Edge]  Yggdrasil 外置登录 | LittleSkin 用户使用手册
@@ -356,8 +381,15 @@ WebTrail 浏览器痕迹取证报告
 2026-06-12 06:26:26  浏览历史 [Edge]  LittleSkin - 快速、可靠的 Minecraft 皮肤站
 2026-06-12 06:26:24  浏览历史 [Edge]  little skin - 搜索
 2026-06-12 05:33:27  下载 [Chrome [Profile 1]]  ChatGPT Image 2026年6月12日 13_33_27.png 2.2MB 已完成
+2026-06-12 05:33:27  Cookie [Chrome [Profile 1]]  chatgpt.com (9条)
+2026-06-12 05:33:21  Cookie [Chrome [Profile 1]]  .ws.chatgpt.com (1条)
+2026-06-12 05:33:21  Cookie [Chrome [Profile 1]]  .chatgpt.com (7条)
+2026-06-12 05:33:21  Cookie [Chrome [Profile 1]]  ws.chatgpt.com (1条)
 2026-06-12 05:30:54  下载 [Chrome [Profile 1]]  ChatGPT Image 2026年6月12日 13_30_54.png 2.2MB 已完成
 2026-06-12 05:28:34  下载 [Chrome [Profile 1]]  ChatGPT Image 2026年6月12日 13_28_34.png 1.6MB 已完成
+2026-06-12 05:25:59  Cookie [Chrome [Profile 1]]  auth.openai.com (2条)
+2026-06-12 05:25:59  Cookie [Chrome [Profile 1]]  .openai.com (3条)
+2026-06-12 05:25:59  Cookie [Chrome [Profile 1]]  .auth.openai.com (6条)
 2026-06-12 05:23:34  浏览历史 [Edge]  免费4K高清壁纸-电脑背景图片-Mac壁纸网站「哲风壁纸」
 2026-06-12 05:23:30  浏览历史 [Edge]  免费4K高清壁纸-电脑背景图片-Mac壁纸网站「哲风壁纸」
 2026-06-12 05:23:30  浏览历史 [Edge]  免费4K高清壁纸-电脑背景图片-Mac壁纸网站「哲风壁纸」
@@ -385,6 +417,8 @@ WebTrail 浏览器痕迹取证报告
 2026-06-12 05:19:59  浏览历史 [Edge]  壁纸 - 搜索
 2026-06-12 05:19:59  浏览历史 [Edge]  壁纸 - 搜索
 2026-06-11 15:35:02  浏览历史 [Edge]  科隆MAJOR_玩机器直播_玩机器丶Machine直播_玩机器CS2直播_玩机器斗鱼直播
+2026-06-11 15:34:54  Cookie [Chrome [Profile 1]]  www.douyu.com (7条)
+2026-06-11 15:34:52  Cookie [Chrome [Profile 1]]  .douyu.com (1条)
 2026-06-11 14:02:52  扩展 [Chrome [Profile 1]]  __MSG_8969005060131950570__
 2026-06-11 14:02:02  扩展 [Chrome [Profile 1]]  Zotero Connector
 2026-06-11 13:59:48  扩展 [Chrome [Profile 1]]  豆包搜索
@@ -393,6 +427,11 @@ WebTrail 浏览器痕迹取证报告
 2026-06-11 13:51:31  会话 [Chrome]  Tabs_13425630613380829 (200.8KB)
 2026-06-11 13:50:40  扩展 [Chrome]  __MSG_name__
 2026-06-11 13:20:12  浏览历史 [Edge]  豆包 - 字节跳动旗下 AI 智能助手
+2026-06-11 10:46:24  Cookie [Chrome [Profile 1]]  .hltv.org (5条)
+2026-06-11 10:45:58  Cookie [Chrome [Profile 1]]  .bidr.io (2条)
+2026-06-11 10:45:44  Cookie [Chrome [Profile 1]]  pool.liftdsp.com (3条)
+2026-06-11 10:45:42  Cookie [Chrome [Profile 1]]  www.hltv.org (5条)
+2026-06-11 10:45:39  Cookie [Chrome [Profile 1]]  scorebot-lb.hltv.org (1条)
 2026-06-11 10:45:22  浏览历史 [Edge]  Counter-Strike News & Coverage | HLTV.org
 2026-06-11 08:55:42  下载 [Edge]  CHAPTER1-2.pdf 2.1MB 已完成
 2026-06-11 08:55:24  浏览历史 [Edge]  学生学习页面
@@ -427,10 +466,12 @@ WebTrail 浏览器痕迹取证报告
 2026-06-11 07:12:43  浏览历史 [Edge]  免费4K高清壁纸-电脑背景图片-Mac壁纸网站「哲风壁纸」
 2026-06-11 07:12:28  浏览历史 [Edge]  免费4K高清壁纸-电脑背景图片-Mac壁纸网站「哲风壁纸」
 2026-06-11 07:12:28  浏览历史 [Edge]  免费4K高清壁纸-电脑背景图片-Mac壁纸网站「哲风壁纸」
-2026-06-11 07:12:24  浏览历史 [Edge]  免费4K高清壁纸-电脑背景图片-Mac壁纸网站「哲风壁纸」
-2026-06-11 07:12:24  浏览历史 [Edge]  免费4K高清壁纸-电脑背景图片-Mac壁纸网站「哲风壁纸」
-2026-06-11 07:12:20  浏览历史 [Edge]  免费4K高清壁纸-电脑背景图片-Mac壁纸网站「哲风壁纸」
-2026-06-11 07:12:20  浏览历史 [Edge]  免费4K高清壁纸-电脑背景图片-Mac壁纸网站「哲风壁纸」
+2026-06-11 06:14:27  Cookie [Chrome [Profile 1]]  .msn.com (4条)
+2026-06-11 06:14:27  Cookie [Chrome [Profile 1]]  www.msn.com (1条)
+2026-06-11 06:14:20  Cookie [Chrome [Profile 1]]  .msn.cn (3条)
+2026-06-11 06:13:37  Cookie [Chrome [Profile 1]]  .c.msn.cn (2条)
+2026-06-11 06:13:37  Cookie [Chrome [Profile 1]]  .c.bing.com (2条)
+2026-06-11 06:13:36  Cookie [Chrome [Profile 1]]  .qq.com (1条)
 2026-06-11 05:53:50  Cookie [Chrome]  .bing.com (14条)
 2026-06-11 05:53:48  Cookie [Chrome]  .google.com (19条)
 2026-06-11 05:53:48  Cookie [Chrome]  accounts.google.com (8条)
@@ -1095,38 +1136,36 @@ WebTrail 浏览器痕迹取证报告
   扩展 [Firefox [jwoa6cvq.default-release]]  Web Compatibility Interventions
   扩展 [Firefox [jwoa6cvq.default-release]]  IPP Activator
   扩展 [Firefox [jwoa6cvq.default-release]]  System theme — auto
-  DNS [DNS缓存]  ident.me
-  DNS [DNS缓存]  a.root-servers.net
-  DNS [DNS缓存]  hcdndyn.zjtd04.v6.c.cdnhwc2.com
-  DNS [DNS缓存]  inner-all.toutiao-internal-all2-v3.lf.bytelb.net
-  DNS [DNS缓存]  api.deepseek.com
-  DNS [DNS缓存]  api.deepseek.com.eo.dnse1.com
-  DNS [DNS缓存]  icube-api-sg.tiktok-row.net
-  DNS [DNS缓存]  icube-api-sg.tiktok-row.net.bpgslb.com
-  DNS [DNS缓存]  inner-all.fe-tiktok-og-sgcentral-rowttp.my.tiktok-row.net
+  DNS [DNS缓存]  shuc-pc-hunt.ksord.com
+  DNS [DNS缓存]  a.gtld-servers.net
+  DNS [DNS缓存]  b.gtld-servers.net
+  DNS [DNS缓存]  c.gtld-servers.net
+  DNS [DNS缓存]  d.gtld-servers.net
+  DNS [DNS缓存]  v10.events.data.microsoft.com
+  DNS [DNS缓存]  win-global-asimov-leafs-events-data.trafficmanager.net
 
 ================================================================================
 统计摘要
 ================================================================================
 
-  总痕迹数: 1096
+  总痕迹数: 1135
 
   【按类型统计】
     浏览历史: 786
     下载: 148
-    Cookie: 60
+    Cookie: 101
     登录凭据: 35
     扩展: 29
     书签: 18
     会话: 11
-    DNS: 9
+    DNS: 7
 
   【按来源统计】
     Edge: 342
     Chrome: 299
+    Chrome [Profile 1]: 254
     Firefox [jwoa6cvq.default-release]: 233
-    Chrome [Profile 1]: 213
-    DNS缓存: 9
+    DNS缓存: 7
 
   【可疑标记: 45 条】
   [浏览历史] [Chrome] 2026-06-08 12:52:10  登录 - Google 账号
@@ -1177,23 +1216,66 @@ WebTrail 浏览器痕迹取证报告
 
 ================================================================================
 ================================================================================
-智能分析报告
+数字取证分析报告
 ================================================================================
 
-  🔴 风险评分: 100/100  (高风险)
+  !! 取证风险评定: 100/100  [高风险]
+     结论: 发现多项高确信度的恶意行为证据，建议立即启动应急响应
 
-  ┌─ 风险归因明细 ───────────────────────────────────────┐
-  │ ███████████████ +30分  可疑关键词标记
-  │    45 条痕迹命中可疑关键词（密码/token/exploit/hack等）
-  │ ███████████████ +30分  高风险URL访问
-  │    3 条 — 示例: http://132.232.228.42:10006/hackable/uploads/noob.php (攻击工具)；https://addons.mozilla.org/zh-CN/firefox/search/?q=HackBar&p (攻击工具)；https://addons.mozilla.org/zh-CN/firefox/search?q=HackBar&pl (攻击工具)
-  │ ███████ +15分  深夜浏览
-  │    深夜(00-05)浏览占比 42.9%，共 337 条——作息异常
-  │ ███████ +15分  可执行文件下载
-  │    19 个可疑文件（含 19 个 .exe/.msi 等）
-  │ ███████ +15分  疑似自动化行为
-  │    快速跳转比例 95.2%——不似人工浏览
-  └────────────────────────────────────────────────────────┘
+  ┌─ 风险维度分解 ───────────────────────────────────────────┐
+  │ 攻击工具与武器化       █████████████████████████████████ 66分
+  │ 侦查与信息收集         0分
+  │ 凭证窃取与持久化       ███████████████ 30分
+  │ 反取证与隐匿         ██████████████████████ 45分
+  └──────────────────────────────────────────────────────────┘
+
+  【证据统计】 共 7 项指标命中  (确凿:3  间接:3  弱信号:1)
+    交叉验证: 1 个杀伤链阶段呈多源印证 (+10分)
+
+  ┌─ 取证发现清单 ──────────────────────────────────────────────┐
+  │ ● [HIGH  ] [+29分] 攻击工具下载
+  │     杀伤链: 武器化 | 维度: 攻击工具与武器化
+  │     说明: 下载已知黑客工具（exploit/payload/shell/malware）
+  │     细节: http://132.232.228.42:10006/hackable/uploads/noob.php
+  │     细节: https://addons.mozilla.org/zh-CN/firefox/search/?q=HackBar&platform=WINNT&appver
+  │     细节: https://addons.mozilla.org/zh-CN/firefox/search?q=HackBar&platform=WINNT&appver=
+  │ ● [HIGH  ] [+37分] 恶意软件接触
+  │     杀伤链: 投递 | 维度: 攻击工具与武器化
+  │     说明: 访问已知恶意域名/IP或下载可执行载荷
+  │     细节: CapCut_7637350497715863573_installer.exe
+  │     细节: CapCut_7637350051492413461_installer.exe
+  │     细节: clash-verge.exe
+  │ ● [HIGH  ] [+25分] 自动化浏览行为
+  │     杀伤链: 目标行动 | 维度: 反取证与隐匿
+  │     说明: 浏览速度异常（>40%快速跳转或连续>10次快速浏览）——疑似脚本操作
+  │     细节: 快速跳转比例 94.8%
+  │ ◉ [MEDIUM] [+15分] 凭证收集痕迹
+  │     杀伤链: 目标行动 | 维度: 凭证窃取与持久化
+  │     说明: 大量登录凭据存储（可能密码复用/撞库风险）
+  │     细节: 存储 13585 个站点凭据
+  │ ◉ [MEDIUM] [+15分] 异常登录行为
+  │     杀伤链: 命令与控制 | 维度: 凭证窃取与持久化
+  │     说明: 登录行为模式异常（多浏览器/多账户）
+  │     细节: 使用 3 个不同浏览器
+  │ ◉ [MEDIUM] [+15分] 深夜异常活跃
+  │     杀伤链: 目标行动 | 维度: 反取证与隐匿
+  │     说明: 00:00-05:00浏览占比超30%——偏离正常作息
+  │     细节: 深夜活跃 348 条 (44.3%)
+  │ ○ [LOW   ] [+ 5分] 多浏览器身份分散
+  │     杀伤链: 目标行动 | 维度: 反取证与隐匿
+  │     说明: 同时使用3个以上浏览器——可能多身份隔离
+  │     细节: 检测到 3 个不同浏览器
+  └──────────────────────────────────────────────────────────────┘
+
+  ┌─ 杀伤链覆盖矩阵 ────────────────────────────────────────────┐
+  │ [ ] 侦察: （未覆盖）
+  │ [×] 武器化: 攻击工具下载
+  │ [×] 投递: 恶意软件接触
+  │ [ ] 利用: （未覆盖）
+  │ [ ] 安装与持久化: （未覆盖）
+  │ [×] 命令与控制: 异常登录行为
+  │ [×] 目标行动: 凭证收集痕迹, 多浏览器身份分散, 自动化浏览行为, 深夜异常活跃 ←交叉验证
+  └──────────────────────────────────────────────────────────────┘
 
   ┌─ 行为画像 ──────────────────────────────────────────┐
   │ 浏览器生态: Chrome, Edge, Firefox (扩展29个)  │
@@ -1208,22 +1290,22 @@ WebTrail 浏览器痕迹取证报告
   【兴趣分类雷达】
     教育     █████████████████████████ 2
 
-  【浏览会话重建】 (共 55 个会话)
-    总浏览时长: 826.4 分钟
-    平均会话: 15.0 分钟
+  【浏览会话重建】 (共 58 个会话)
+    总浏览时长: 828.0 分钟
+    平均会话: 14.3 分钟
     最长会话: 107.1 分钟
     长会话 (>2h): 0 个
-    瞬时会话 (<1min): 24 个
+    瞬时会话 (<1min): 26 个
     最近会话:
-      #51  06-13 03:16  18.0min  32页  [...]
-      #52  06-13 06:56  75.6min  59页  [bing.com...]
-      #53  06-13 08:42  18.6min  32页  [...]
-      #54  06-13 10:17  5.0min  20页  [...]
-      #55  06-13 11:44  19.3min  12页  [mooc1.chaoxing.com...]
+      #54  06-13 10:17  5.0min  19页  [...]
+      #55  06-13 11:44  4.1min  7页  [mooc1.chaoxing.com...]
+      #56  06-13 15:41  0.0min  1页  [...]
+      #57  06-14 03:20  3.4min  11页  [bing.com...]
+      #58  06-14 06:40  41.0min  6页  [...]
 
   【浏览速度检测】 ⚠️ 疑似自动化行为
-    平均间隔: 35877.5 秒
-    快速跳转比例: 95.2%
+    平均间隔: 35966.0 秒
+    快速跳转比例: 94.8%
     连续快速浏览段: [16, 34, 48, 37, 39, 4, 5, 4, 3, 7]
 
   ⚠️ 高风险URL (3 条)
@@ -1232,23 +1314,23 @@ WebTrail 浏览器痕迹取证报告
       [Firefox [jwoa6cvq.default-release]] https://addons.mozilla.org/zh-CN/firefox/search?q=HackBar&platform=WINNT&appver=116.0.3&ut  (攻击工具)
 
   【24小时分布】  活跃高峰: 2:00
-    深夜 (00-05): 337 条 (42.9%)
+    深夜 (00-05): 348 条 (44.3%)
     00:00  ████████████ (12)
     01:00  █████████████████████████ (25)
     02:00  ██████████████████████████████ (199)
-    03:00  ██████████████████████████████ (52)
+    03:00  ██████████████████████████████ (63)
     04:00  ██ (2)
     05:00  ██████████████████████████████ (47)
-    06:00  ██████████████████████████████ (88)
-    07:00  ██████████████████████████████ (125)
-    08:00  ██████████████████████████████ (57)
+    06:00  ██████████████████████████████ (91)
+    07:00  ██████████████████████████████ (122)
+    08:00  ██████████████████████████████ (54)
     09:00  ██████████████████████████████ (33)
-    10:00  ██████████████████████████████ (56)
-    11:00  ██████████████████ (18)
-    12:00  ██████████████████████████████ (52)
+    10:00  ██████████████████████████████ (55)
+    11:00  █████████████████ (17)
+    12:00  ██████████████████████████████ (48)
     13:00  ██████████ (10)
-    14:00  ████ (4)
-    15:00  ██████ (6)
+    14:00  █ (1)
+    15:00  ███████ (7)
 
   【访问Top域名】 (共 15 个)
      1. 132.232.228.42  (18次)

@@ -14,12 +14,15 @@ import argparse
 import json
 import sys
 import os
+import logging
 
 # 确保以包模式运行
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from extraction import ChromiumExtractor, FirefoxExtractor, SystemExtractor
 from reporting import generate, format_analysis
 from analysis import analyze
+
+_log = logging.getLogger("WebTrail.main")
 
 BANNER = """
 ╔══════════════════════════════════════════════════════════╗
@@ -45,7 +48,7 @@ def main():
     try:
         sys.stdout.reconfigure(encoding='utf-8')
     except Exception:
-        pass
+        _log.debug("stdout reconfigure 失败（非关键）", exc_info=True)
 
     if not args.quiet:
         print(BANNER)

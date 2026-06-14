@@ -18,5 +18,5 @@ class BaseExtractor(ABC):
 
     @staticmethod
     def _safe_sqlite(db_path: str):
-        """打开SQLite副本（调用方负责 conn.close() + os.remove(tmp)）"""
+        """打开SQLite副本（调用方负责 conn.close()；若返回 tmp 非空还需 os.remove(tmp)）"""
         return read_sqlite_copy(db_path)

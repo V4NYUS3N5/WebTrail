@@ -18,6 +18,7 @@
 import os
 import sys
 import json
+import math
 import threading
 import tkinter as tk
 from tkinter import ttk, filedialog, scrolledtext
@@ -144,6 +145,29 @@ class WebTrailGUI:
             w.tag_configure("finding", foreground="#1b5e20")
             w.tag_configure("axis", foreground="#6a1b9a")
 
+        # 可视化 Tab
+        viz_frame = tk.Frame(self.notebook)
+        self.notebook.add(viz_frame, text="  📊 风险可视化  ")
+
+        left = tk.Frame(viz_frame, bg="#fafafa")
+        left.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=4, pady=4)
+        right = tk.Frame(viz_frame, bg="#fafafa")
+        right.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=4, pady=4)
+
+        tk.Label(left, text="风险维度雷达图", font=("Microsoft YaHei", 11, "bold"),
+                 fg="#1565c0", bg="#fafafa").pack(pady=(8, 2))
+        self.canvas_radar = tk.Canvas(left, bg="#ffffff", highlightthickness=1,
+                                       highlightbackground="#e0e0e0",
+                                       width=430, height=440)
+        self.canvas_radar.pack(padx=8, pady=4)
+
+        tk.Label(right, text="杀伤链覆盖热力图", font=("Microsoft YaHei", 11, "bold"),
+                 fg="#1565c0", bg="#fafafa").pack(pady=(8, 2))
+        self.canvas_heatmap = tk.Canvas(right, bg="#ffffff", highlightthickness=1,
+                                         highlightbackground="#e0e0e0",
+                                         width=520, height=440)
+        self.canvas_heatmap.pack(padx=8, pady=4)
+
         # 状态栏
         self.statusbar = tk.Label(self.root, text="就绪 — 等待操作",
             font=("Microsoft YaHei", 9), fg="#bbdefb", bg="#1565c0",
@@ -226,13 +250,152 @@ class WebTrailGUI:
 
         score = result.risk_score
         level = result.risk_level
-        color = "#d32f2f" if score >= 60 else ("#f57c00" if score >= 30 else "#2e7d32")
+        color = "#d32f2f" if score >= 70 else ("#f57c00" if score >= 40 else "#2e7d32")
         self.stat_score.config(text=f"风险: {score}/100 ({level})", fg=color)
 
         self._set_text(self.text_report, self.report_text)
         self._set_text(self.text_analysis, self.analysis_text)
         self.notebook.select(0)
         self._set_status(f"完成 — {len(self.traces)} 条痕迹 | 风险 {score}/100 ({level})")
+
+        # 绘制可视化
+        self._draw_radar(result.axis_scores or {})
+        self._draw_heatmap(result.kill_chain_coverage or {}, result.findings or [])
+
+    def _draw_radar(self, axis_scores: dict):
+        """在 Canvas 上绘制四维风险雷达图"""
+        c = self.canvas_radar
+        c.delete("all")
+
+        w, h = 430, 440
+        cx, cy = w // 2, h // 2 + 5
+        r = 155
+
+        axes = [
+            ("攻击工具\n与武器化", "attack_tooling", 45),
+            ("侦查与\n信息收集", "recon_intel", 135),
+            ("凭证窃取\n与持久化", "credential_persist", 225),
+            ("反取证\n与隐匿", "anti_forensics", 315),
+        ]
+
+        scores = [axis_scores.get(k, 0) for _, k, _ in axes]
+        max_score = max(max(scores), 1)
+        max_score = max(max_score, 25)
+
+        # 同心参考网格
+        for level in (0.25, 0.5, 0.75, 1.0):
+            pts = []
+            for _, _, angle in axes:
+                rad = math.radians(angle)
+                lr = r * level
+                pts.extend([cx + lr * math.cos(rad), cy - lr * math.sin(rad)])
+            c.create_polygon(pts, outline="#e0e0e0", fill="", width=1)
+            if level > 0:
+                c.create_text(cx + r * level * 0.71 - 4, cy - r * level * 0.71 + 4,
+                              text=str(int(max_score * level)), fill="#9e9e9e",
+                              font=("Consolas", 8))
+
+        # 轴线
+        for _, _, angle in axes:
+            rad = math.radians(angle)
+            c.create_line(cx, cy, cx + r * math.cos(rad), cy - r * math.sin(rad),
+                          fill="#bdbdbd", width=1)
+
+        # 数据多边形
+        data_pts = []
+        for _, key, angle in axes:
+            score = axis_scores.get(key, 0)
+            dist = min(score / max_score, 1.0) * r if max_score > 0 else 0
+            rad = math.radians(angle)
+            data_pts.extend([cx + dist * math.cos(rad), cy - dist * math.sin(rad)])
+        c.create_polygon(data_pts, fill="#1565c0", outline="#0d47a1",
+                         width=2, stipple="gray50")
+
+        # 数据点 + 标签
+        for label, key, angle in axes:
+            score = axis_scores.get(key, 0)
+            dist = min(score / max_score, 1.0) * r if max_score > 0 else 0
+            rad = math.radians(angle)
+            px = cx + dist * math.cos(rad)
+            py = cy - dist * math.sin(rad)
+            c.create_oval(px - 5, py - 5, px + 5, py + 5,
+                          fill="#0d47a1", outline="#ffffff", width=2)
+            c.create_text(px, py - 14, text=str(score),
+                          fill="#0d47a1", font=("Consolas", 10, "bold"))
+            lx = cx + (r + 38) * math.cos(rad)
+            ly = cy - (r + 38) * math.sin(rad)
+            c.create_text(lx, ly, text=label, fill="#212121",
+                          font=("Microsoft YaHei", 9, "bold"), justify=tk.CENTER)
+
+    def _draw_heatmap(self, chain_map: dict, findings: list):
+        """绘制杀伤链阶段 × 确信度热力图"""
+        c = self.canvas_heatmap
+        c.delete("all")
+
+        stages = ["侦察", "武器化", "投递", "利用", "安装与\n持久化", "命令与\n控制", "目标行动"]
+        conf_labels = ["确凿 HIGH", "间接 MEDIUM", "弱信号 LOW"]
+        conf_keys = ["HIGH", "MEDIUM", "LOW"]
+
+        matrix = [[0] * 3 for _ in range(7)]
+        for stage_idx_str, fids in (chain_map or {}).items():
+            si = int(stage_idx_str)
+            for fid in fids:
+                for f in findings:
+                    if f.get("id") == fid:
+                        try:
+                            ci = conf_keys.index(f.get("confidence", "LOW"))
+                        except ValueError:
+                            ci = 2
+                        matrix[si][ci] += 1
+
+        max_val = max(max(row) for row in matrix) or 1
+
+        def heat_color(count, max_v):
+            if count == 0:
+                return "#f5f5f5"
+            ratio = count / max_v
+            if ratio <= 0.33:
+                return "#c8e6c9"
+            elif ratio <= 0.66:
+                return "#fff9c4"
+            else:
+                return "#ffcdd2"
+
+        margin_left, margin_top = 120, 40
+        cell_w, cell_h = 100, 44
+        header_h = 30
+
+        for ci, cl in enumerate(conf_labels):
+            x = margin_left + ci * cell_w
+            c.create_rectangle(x, margin_top, x + cell_w, margin_top + header_h,
+                               fill="#1565c0", outline="#0d47a1")
+            c.create_text(x + cell_w // 2, margin_top + header_h // 2,
+                          text=cl, fill="#ffffff", font=("Microsoft YaHei", 9, "bold"))
+
+        for si, stage in enumerate(stages):
+            y = margin_top + header_h + si * cell_h
+            c.create_text(margin_left - 10, y + cell_h // 2,
+                          text=stage, fill="#212121",
+                          font=("Microsoft YaHei", 9), anchor=tk.E, justify=tk.RIGHT)
+            for ci in range(3):
+                count = matrix[si][ci]
+                x = margin_left + ci * cell_w
+                color = heat_color(count, max_val)
+                c.create_rectangle(x, y, x + cell_w, y + cell_h,
+                                   fill=color, outline="#e0e0e0", width=1)
+                text_color = "#212121" if count > 0 else "#bdbdbd"
+                c.create_text(x + cell_w // 2, y + cell_h // 2,
+                              text=str(count) if count > 0 else "—",
+                              fill=text_color, font=("Consolas", 14, "bold"))
+
+        ly = margin_top + header_h + 7 * cell_h + 18
+        c.create_text(margin_left, ly, text="少 ←", fill="#9e9e9e",
+                      font=("Microsoft YaHei", 8), anchor=tk.W)
+        for i, col in enumerate(["#c8e6c9", "#fff9c4", "#ffcdd2"]):
+            lx = margin_left + 55 + i * 30
+            c.create_rectangle(lx, ly - 8, lx + 22, ly + 8, fill=col, outline="#e0e0e0")
+        c.create_text(margin_left + 155, ly, text="→ 多", fill="#9e9e9e",
+                      font=("Microsoft YaHei", 8), anchor=tk.W)
 
     def _set_text(self, widget, content):
         widget.config(state=tk.NORMAL)
@@ -309,6 +472,8 @@ class WebTrailGUI:
             w.config(state=tk.NORMAL)
             w.delete(1.0, tk.END)
             w.config(state=tk.DISABLED)
+        self.canvas_radar.delete("all")
+        self.canvas_heatmap.delete("all")
 
     def _set_status(self, msg):
         self.statusbar.config(text=msg)

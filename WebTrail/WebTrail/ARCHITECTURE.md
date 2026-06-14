@@ -6,41 +6,46 @@
 WebTrail/
 │
 ├─ Layer 0: 配置与模型 ──────────────────────────────────
-│   ├── config.py         集中配置中心
-│   └── models.py         数据模型定义
+│   ├── config.py             集中配置中心
+│   └── models.py             数据模型定义
 │
 ├─ Layer 1: 基础设施 ──────────────────────────────────────
 │   └── utils/
-│       ├── time.py       时间戳转换
-│       └── sqlite.py     SQLite 安全读取
+│       ├── __init__.py       导出 4 个工具函数
+│       ├── time.py           时间戳转换（3种）
+│       └── sqlite.py         SQLite 安全副本读取
 │
 ├─ Layer 2a: 痕迹提取 ────────────────────────────────────
 │   └── extraction/
-│       ├── base.py        抽象基类
-│       ├── chromium.py    Chromium 提取器
-│       ├── firefox.py     Firefox 提取器
-│       └── system.py      系统级提取器
+│       ├── __init__.py       导出 4 个提取器
+│       ├── base.py           抽象基类（ABC + _safe_sqlite）
+│       ├── chromium.py       Chromium 提取器（5浏览器 × 7维度）
+│       ├── firefox.py        Firefox 提取器（6维度）
+│       └── system.py         系统级提取器（UserAssist/DNS/Prefetch）
 │
 ├─ Layer 2b: 智能分析 ────────────────────────────────────
 │   └── analysis/
-│       ├── engine.py      分析编排器（主入口）
-│       ├── classifier.py  内容分类（阶段1）
-│       ├── session.py     会话重建（阶段2）
-│       ├── velocity.py    速度检测（阶段2）
-│       ├── profiler.py    用户画像（阶段3）
-│       └── risk.py        风险评估（阶段5）
+│       ├── __init__.py       导出 analyze() 入口
+│       ├── engine.py         分析编排器（5阶段流水线）
+│       ├── classifier.py     内容分类（9个函数，阶段1）
+│       ├── session.py        会话重建（阶段2）
+│       ├── velocity.py       浏览速度检测（阶段2）
+│       ├── profiler.py       用户画像（阶段3）
+│       └── risk.py           取证风险评估（4阶段，阶段5）
 │
 ├─ Layer 2c: 报告展示 ────────────────────────────────────
 │   └── reporting/
-│       ├── report.py      取证报告生成
-│       └── formatter.py   分析报告格式化
+│       ├── __init__.py       导出 generate / format
+│       ├── report.py         取证时间线报告
+│       └── formatter.py      分析报告格式化（8章节）
 │
 ├─ Layer 3: 入口 ─────────────────────────────────────────
-│   ├── main.py            CLI 命令行入口
-│   ├── gui.py             GUI 图形界面
-│   └── __init__.py        包导出声明
+│   ├── __init__.py           顶层包（导出6个核心符号）
+│   ├── main.py               CLI 命令行入口
+│   └── gui.py                GUI 图形界面（tkinter，蓝白主题）
 │
-└── README.md              用户文档
+├── ARCHITECTURE.md           模块架构说明书（本文件）
+└── README.md                 用户文档
 ```
 
 ---
@@ -90,15 +95,26 @@ WebTrail/
 
 ### `utils/sqlite.py` — SQLite 安全读取
 
-| 函数 | 说明 |
-|------|------|
-| `read_sqlite_copy(db_path)` | 将 DB 复制为临时文件再打开连接，返回 `(conn, tmp_path)` |
+双策略锁规避机制：
 
-调用方负责 `conn.close()` 后 `os.remove(tmp)`。避免与运行中浏览器的文件锁冲突。
+| 策略 | 方法 | 说明 |
+|------|------|------|
+| 1 | URI immutable 直连 | `file:path?mode=ro&immutable=1` 零拷贝只读连接 |
+| 2 | 临时文件复制 | 回退方案：复制 `.tf_tmp` → 连接 → 用完删除 |
+
+返回值 `(conn, tmp_path)`。`tmp_path` 为 `None` 时表示策略1成功（无需清理），非空时调用方负责 `conn.close()` + `os.remove(tmp)`。
+
+### `utils/__init__.py` — 包入口
+
+对外导出 4 个函数：`filetime_to_datetime` / `chrome_time_to_dt` / `firefox_time_to_dt` / `read_sqlite_copy`。
 
 ---
 
 ## Layer 2a — 痕迹提取
+
+### `extraction/__init__.py` — 包入口
+
+对外导出 4 个提取器：`BaseExtractor` / `ChromiumExtractor` / `FirefoxExtractor` / `SystemExtractor`。
 
 ### `extraction/base.py` — 抽象基类
 
@@ -154,6 +170,10 @@ WebTrail/
 ---
 
 ## Layer 2b — 智能分析
+
+### `analysis/__init__.py` — 包入口
+
+对外导出 `analyze()` 函数。内部串联 6 个子模块完成 5 阶段分析流水线。
 
 ### `analysis/engine.py` — 分析编排器（主入口）
 
@@ -249,6 +269,10 @@ WebTrail/
 
 ## Layer 2c — 报告展示
 
+### `reporting/__init__.py` — 包入口
+
+对外导出 2 个函数：`generate(traces)` 和 `format_analysis(result)`。
+
 ### `reporting/report.py` — 取证报告生成
 
 | 函数 | 功能 |
@@ -261,16 +285,19 @@ WebTrail/
 
 ### `reporting/formatter.py` — 分析报告格式化
 
-将 `AnalysisResult` 渲染为 Markdown 风格纯文本，包含 8 个章节：
+将 `AnalysisResult` 渲染为 Markdown 风格纯文本，完整产出覆盖：
 
 1. 取证风险评定 — 总分 / 等级 / 结论
 2. 风险维度分解 — 4 轴分项得分条形图
-3. 证据统计 — HIGH/MEDIUM/LOW 计数 + 交叉验证
-4. 取证发现清单 — 逐项明细（●确信度图标 + 得分 + 杀伤链阶段 + 细节）
-5. 杀伤链覆盖矩阵 — 7 阶段 [×]/[ ] 覆盖标记
-6. 行为画像 — 浏览器生态 / 扩展 / 兴趣 / 下载 / 账户
-7. 搜索行为分析 — 引擎分布 / 主题分布 / 最近搜索
-8. 会话重建 / 速度检测 / 24h 分布 / Top 域名 / 下载风险 / 隐私追踪
+3. 证据统计 — HIGH/MEDIUM/LOW 计数 + 交叉验证加成
+4. 取证发现清单 — 逐项明细（确信度图标 + 得分贡献 + 杀伤链阶段 + 说明 + 细节）
+5. 杀伤链覆盖矩阵 — 7 阶段 [×]/[ ] 覆盖标记，≥3 条标记交叉验证
+6. 行为画像 — 浏览器生态 / 扩展数 / 兴趣倾向 / 搜索偏好 / 下载习惯 / 深夜活动
+7. 搜索行为分析 — 引擎分布 / 主题分布 / 最近 15 条搜索词
+8. 兴趣分类雷达 — Top 10 域名类别柱状可视化
+9. 会话重建 — 会话数 / 总时长 / 均值 / 极值 / 长/短会话
+10. 浏览速度检测 — 平均间隔 / 快速跳转比例 / 连续段 / 自动化标记
+11. 高风险URL明细 / 24小时分布 / Top15域名 / 下载风险 / 隐私追踪器
 
 ---
 
@@ -289,12 +316,26 @@ WebTrail/
 
 ### `gui.py` — 图形界面
 
-tkinter 构建，蓝白主题。
-- 标题栏 + 统计摘要栏（痕迹数/可疑数/浏览器数/风险分）
-- 双 Tab（取证报告 / 取证分析）
-- 线程化提取（不阻塞 UI），支持中途停止
-- 保存 TXT / 导出 JSON
+技术栈：tkinter + ttk，蓝白配色，纯标准库。
 
-### `__init__.py` — 包导出
+**布局结构：**
+- 标题栏 — WebTrail 品牌标识 + 版本号 + 状态指示
+- 统计摘要栏 — 痕迹数 / 可疑数 / 浏览器数 / 风险分 + 进度条
+- 按钮栏 — 开始 / 停止 / 💾保存报告 / 📄导出JSON / 🗑清空
+- 三 Tab — 取证报告（时间线） / 智能分析（风险评估 + 画像 + 会话...） / 风险可视化（雷达图 + 热力图）
+- 底部状态栏 — 实时操作提示
+
+**Canvas 可视化：**
+- 风险维度雷达图 — 4轴得分为顶点绘制数据多边形，含同心参考网格、得分数值标注
+- 杀伤链覆盖热力图 — 7阶段 × 3级确信度矩阵，颜色深浅反映证据密度（浅绿→黄→浅红）
+
+**线程模型：**
+- 主线程负责 UI 渲染
+- Worker 线程异步执行提取 + 分析，通过 `self.running` 布尔标志位实现安全停止
+- 各提取阶段之间检查 `self.running`，支持中途取消
+
+**语法高亮：** 6 个 Tag — suspect(红) / header(蓝) / section(蓝) / warn(红) / finding(深绿) / axis(深紫)
+
+### `__init__.py` — 顶层包
 
 对外暴露 6 个顶层符号：`ChromiumExtractor` / `FirefoxExtractor` / `SystemExtractor` / `analyze` / `generate` / `format_analysis`。

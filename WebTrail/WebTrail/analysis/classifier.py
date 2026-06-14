@@ -29,6 +29,7 @@ def extract_domain(url: str | None) -> str | None:
         host = urlparse(url).hostname
         return host[4:] if host and host.startswith("www.") else host
     except Exception:
+        _log.debug("域名解析失败: %s", url, exc_info=True)
         return None
 
 
@@ -70,6 +71,7 @@ def extract_search_queries(traces: List[Trace]) -> Dict:
                             "topic": topic,
                         })
                 except Exception:
+                    _log.debug("搜索词提取失败 (url=%s): %s", url[:80] if url else "", engine_name, exc_info=True)
                     pass
                 break
 
