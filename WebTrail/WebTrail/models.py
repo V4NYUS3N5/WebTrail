@@ -30,11 +30,30 @@ class Trace:
 @dataclass
 class AnalysisResult:
     """完整分析结果"""
-    # 风险概览
+    # ── 风险概览 ──
     risk_score: int = 0
     risk_level: str = "低风险"
-    risk_reasons: List[tuple] = field(default_factory=list)
+    risk_summary: str = ""
     high_risk_urls: List[str] = field(default_factory=list)
+
+    # ── 取证发现清单 (Forensic Findings) ──
+    # 每项: {"id": str, "name": str, "axis": str, "kill_chain": int,
+    #        "confidence": str, "desc": str, "detail": str, "count": int}
+    findings: List[dict] = field(default_factory=list)
+
+    # ── 证据统计 ──
+    finding_stats: dict = field(default_factory=dict)
+    # {"high_count": int, "medium_count": int, "low_count": int,
+    #  "total_count": int, "corroborated_stages": int}
+
+    # ── 分轴得分 ──
+    axis_scores: dict = field(default_factory=dict)
+    # {"attack_tooling": int, "recon_intel": int,
+    #  "credential_persist": int, "anti_forensics": int}
+
+    # ── 杀伤链覆盖 ──
+    kill_chain_coverage: dict = field(default_factory=dict)
+    # {stage_index: [finding_id_list]}
 
     # 搜索行为
     search_queries: List[Dict] = field(default_factory=list)

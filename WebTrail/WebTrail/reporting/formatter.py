@@ -2,29 +2,93 @@
 分析报告格式化 — 将 AnalysisResult 渲染为可读文本
 """
 from models import AnalysisResult
+from config import KILL_CHAIN_STAGES, RISK_AXES
 
 
 def format(analysis: AnalysisResult) -> str:
     """格式化为 Markdown 风格纯文本"""
-    lines = ["", "=" * 80, "智能分析报告", "=" * 80, ""]
+    lines = ["", "=" * 80, "数字取证分析报告", "=" * 80, ""]
 
     # ---- 风险概览 ----
     score = analysis.risk_score
     level = analysis.risk_level
-    level_icon = {"高风险": "🔴", "中风险": "🟡", "低风险": "🟢"}.get(level, "⚪")
-    lines.append(f"  {level_icon} 风险评分: {score}/100  ({level})")
+    summary = analysis.risk_summary or ""
+    level_icon = {"高风险": "!!", "中风险": "! ", "低风险": "  "}.get(level, "  ")
+    lines.append(f"  {level_icon} 取证风险评定: {score}/100  [{level}]")
+    if summary:
+        lines.append(f"     结论: {summary}")
     lines.append("")
 
-    # 逐项归因
-    reasons = analysis.risk_reasons
-    if reasons:
-        lines.append("  ┌─ 风险归因明细 ───────────────────────────────────────┐")
-        total_contrib = sum(r[1] for r in reasons)
-        for reason, contrib, detail in reasons:
-            bar = "█" * max(1, contrib // 2)
-            lines.append(f"  │ {bar} +{contrib}分  {reason}")
-            lines.append(f"  │    {detail}")
-        lines.append("  └────────────────────────────────────────────────────────┘")
+    # ---- 分轴得分 ----
+    axis_scores = analysis.axis_scores or {}
+    if axis_scores:
+        lines.append("  ┌─ 风险维度分解 ───────────────────────────────────────────┐")
+        axis_labels = {
+            "attack_tooling":      "攻击工具与武器化",
+            "recon_intel":         "侦查与信息收集",
+            "credential_persist":  "凭证窃取与持久化",
+            "anti_forensics":      "反取证与隐匿",
+        }
+        for ax_key, ax_label in axis_labels.items():
+            val = axis_scores.get(ax_key, 0)
+            bar_len = max(0, val // 2)
+            bar = "█" * bar_len + ("░" if val > 0 and bar_len == 0 else "")
+            lines.append(f"  │ {ax_label:<14} {bar} {val}分")
+        lines.append("  └──────────────────────────────────────────────────────────┘")
+        lines.append("")
+
+    # ---- 证据统计 ----
+    stats = analysis.finding_stats or {}
+    if stats:
+        high_c = stats.get("high_count", 0)
+        med_c = stats.get("medium_count", 0)
+        low_c = stats.get("low_count", 0)
+        total_c = stats.get("total_count", 0)
+        corr = stats.get("corroborated_stages", 0)
+        bonus = stats.get("cross_bonus", 0)
+        lines.append(f"  【证据统计】 共 {total_c} 项指标命中  "
+                     f"(确凿:{high_c}  间接:{med_c}  弱信号:{low_c})")
+        if corr > 0:
+            lines.append(f"    交叉验证: {corr} 个杀伤链阶段呈多源印证 (+{bonus}分)")
+        lines.append("")
+
+    # ---- 取证发现明细 ----
+    findings = analysis.findings or []
+    if findings:
+        lines.append("  ┌─ 取证发现清单 ──────────────────────────────────────────────┐")
+        conf_icon = {"HIGH": "●", "MEDIUM": "◉", "LOW": "○"}
+        # 按相信度排序：HIGH → MEDIUM → LOW
+        findings_sorted = sorted(findings,
+                                 key=lambda f: {"HIGH": 0, "MEDIUM": 1, "LOW": 2}.get(
+                                     f.get("confidence", "LOW"), 3))
+        for f in findings_sorted:
+            c = f.get("confidence", "LOW")
+            icon = conf_icon.get(c, "?")
+            score_c = f.get("_score_contrib", 0)
+            chain_stage = KILL_CHAIN_STAGES[f["kill_chain"]] if f.get("kill_chain", -1) >= 0 else "?"
+            axis_label = RISK_AXES.get(f.get("axis", ""), "?")
+            lines.append(f"  │ {icon} [{c:<6}] [+{score_c:>2d}分] "
+                         f"{f.get('name', '?')}")
+            lines.append(f"  │     杀伤链: {chain_stage} | 维度: {axis_label}")
+            lines.append(f"  │     说明: {f.get('desc', '')}")
+            for d in f.get("details", [])[:3]:
+                lines.append(f"  │     细节: {d}")
+        lines.append("  └──────────────────────────────────────────────────────────────┘")
+        lines.append("")
+
+    # ---- 杀伤链覆盖矩阵 ----
+    chain_cov = analysis.kill_chain_coverage or {}
+    if chain_cov:
+        lines.append("  ┌─ 杀伤链覆盖矩阵 ────────────────────────────────────────────┐")
+        for idx, stage_name in enumerate(KILL_CHAIN_STAGES):
+            fids = chain_cov.get(idx, [])
+            if fids:
+                names = [f.get("name", fid) for fid in fids for f in findings if f["id"] == fid]
+                flag = " ←交叉验证" if len(fids) >= 3 else ""
+                lines.append(f"  │ [×] {stage_name}: {', '.join(names)}{flag}")
+            else:
+                lines.append(f"  │ [ ] {stage_name}: （未覆盖）")
+        lines.append("  └──────────────────────────────────────────────────────────────┘")
         lines.append("")
 
     # ---- 用户画像 ----

@@ -1,6 +1,14 @@
 """
-WebTrail - 浏览器痕迹取证提取工具
-支持 Chrome / Edge / Brave / Opera / 360 / Firefox
+CLI 命令行入口（Layer 3 — 入口层）
+
+支持的命令行参数：
+  -o/--output  保存报告到指定文件
+  --json       导出原始数据为 JSON
+  -q/--quiet   静默模式（仅输出摘要）
+  -g/--gui     启动图形界面
+
+执行流程：
+  参数解析 → 三路提取 → 取证报告 → 智能分析 → 输出/保存
 """
 import argparse
 import json

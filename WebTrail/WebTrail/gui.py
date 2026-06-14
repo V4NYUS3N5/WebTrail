@@ -1,6 +1,19 @@
 """
-WebTrail GUI — 图形界面取证工具
-基于 tkinter，标准库构建，无需额外依赖
+图形界面入口（Layer 3 — 入口层）
+
+技术栈：tkinter + ttk，纯标准库，无需额外依赖
+主题：蓝白配色
+
+界面布局：
+  - 标题栏（WebTrail logo + 版本号 + 状态标签）
+  - 统计摘要栏（痕迹数 / 可疑数 / 浏览器数 / 风险分 + 进度条）
+  - 按钮栏（开始 / 停止 / 保存报告 / 导出JSON / 清空）
+  - 双Tab（取证报告 / 取证分析）— ScrolledText + 语法高亮
+  - 底部状态栏
+
+线程模型：
+  - 主线程：UI 渲染
+  - Worker 线程：提取 + 分析（通过 self.running 标志位实现安全停止）
 """
 import os
 import sys
@@ -128,6 +141,8 @@ class WebTrailGUI:
             w.tag_configure("section", foreground="#1976d2")
             w.tag_configure("warn", foreground="#d32f2f")
             w.tag_configure("dim", foreground="#9e9e9e")
+            w.tag_configure("finding", foreground="#1b5e20")
+            w.tag_configure("axis", foreground="#6a1b9a")
 
         # 状态栏
         self.statusbar = tk.Label(self.root, text="就绪 — 等待操作",
@@ -197,14 +212,17 @@ class WebTrailGUI:
 
     def _display_results(self, result):
         sus_count = sum(1 for t in self.traces if t.suspicious)
-        browsers = set()
+        # 按浏览器名聚合（去掉 [...] 后缀）
+        browser_names = set()
         for t in self.traces:
-            if "[" not in t.source:
-                browsers.add(t.source)
+            src = t.source.split(" [")[0].strip()
+            if src in ("DNS缓存", "UserAssist", "Prefetch"):
+                continue
+            browser_names.add(src)
 
         self.stat_total.config(text=f"痕迹: {len(self.traces)}")
         self.stat_sus.config(text=f"可疑: {sus_count}")
-        self.stat_browsers.config(text=f"浏览器: {len(browsers)}")
+        self.stat_browsers.config(text=f"浏览器: {len(browser_names)}")
 
         score = result.risk_score
         level = result.risk_level
@@ -228,10 +246,14 @@ class WebTrailGUI:
                 widget.tag_add("suspect", start, end)
             elif line.startswith("====") or line.startswith("----"):
                 widget.tag_add("section", start, end)
-            elif "风险评分" in line or "统计摘要" in line:
+            elif "取证风险评定" in line or "统计摘要" in line:
                 widget.tag_add("header", start, end)
             elif line.startswith("⚠") or "高风险" in line:
                 widget.tag_add("warn", start, end)
+            elif line.startswith("  │") and ("●" in line or "◉" in line or "○" in line):
+                widget.tag_add("finding", start, end)
+            elif "分" in line and "杀伤链" in line:
+                widget.tag_add("axis", start, end)
 
         widget.config(state=tk.DISABLED)
 

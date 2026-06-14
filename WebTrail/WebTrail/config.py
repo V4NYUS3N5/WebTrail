@@ -78,11 +78,6 @@ SEARCH_TOPIC_RULES = [
     (r"(新冠|疫情|核酸|口罩|卫健委)", "健康防疫"),
 ]
 
-SENSITIVE_TOPICS = {
-    "破解/盗版", "安全攻防", "翻墙工具", "暗网相关", "社工查询",
-    "博彩相关", "成人内容", "恶意软件", "敏感证件", "灰产金融",
-}
-
 # ========================== 域名分类规则 ==========================
 
 DOMAIN_CATEGORY_RULES = [
@@ -202,23 +197,196 @@ DNS_SKIP_KEYWORDS = [
 
 # ========================== 会话阈值 ==========================
 
-SESSION_GAP_SECONDS = 30 * 60        # 30分钟无操作=新会话
-LONG_SESSION_MINUTES = 120           # >2h 长会话
-SHORT_SESSION_MINUTES = 1            # <1min 瞬时会话
-VELOCITY_MIN_SAMPLES = 5             # 速度检测最少采样
-AUTOMATION_BURST_RATIO = 40          # >40% 快速跳转=自动化嫌疑
-AUTOMATION_RAPID_STREAK = 10         # >10 连续快速=自动化嫌疑
+SESSION_GAP_SECONDS = 30 * 60
+LONG_SESSION_MINUTES = 120
+SHORT_SESSION_MINUTES = 1
+VELOCITY_MIN_SAMPLES = 5
+AUTOMATION_BURST_RATIO = 40
+AUTOMATION_RAPID_STREAK = 10
 
-# ========================== 风险评分权重 ==========================
+# ========================================================================
+# 数字取证风险指标体系
+# 基于 NIST SP 800-86 + 网络杀伤链模型，三级证据分级
+# ========================================================================
 
-RISK_WEIGHTS = {
-    "suspicious_keyword":  (30, 5),    # (上限, 每条得分)
-    "high_risk_url":       (30, 10),   # (上限, 每条得分)
-    "late_night_high":     (15, 30),   # (>30%时的得分, 阈值)
-    "late_night_medium":   (8,  15),   # (>15%时的得分, 阈值)
-    "download_risky":      (15, 3),    # (上限, 每个文件得分)
-    "tracker_high":        (10, 50),   # (>50个时的得分, 阈值)
-    "tracker_medium":      (5,  20),   # (>20个时的得分, 阈值)
-    "sensitive_search":    (20, 3),    # (上限, 每条得分)
-    "automation":          (15, 0),    # 固定得分
+# ---- 证据确信度定义 ----
+# HIGH   = 可直接归因的恶意指标（如已知恶意域名、工具签名）
+# MEDIUM = 行为模式高度偏离基线，需结合上下文字段判定
+# LOW    = 弱信号，仅作佐证参考
+
+# ---- 杀伤链阶段 ----
+KILL_CHAIN_STAGES = [
+    "侦察",       # Reconnaissance
+    "武器化",     # Weaponization
+    "投递",       # Delivery
+    "利用",       # Exploitation
+    "安装与持久化", # Installation
+    "命令与控制",   # C2
+    "目标行动",     # Actions
+]
+
+# ---- 风险轴（4 维度） ----
+RISK_AXES = {
+    "attack_tooling":  "攻击工具与武器化",
+    "recon_intel":     "侦查与信息收集",
+    "credential_persist": "凭证窃取与持久化",
+    "anti_forensics":   "反取证与隐匿",
 }
+
+# ---- 取证指标定义 ----
+# 格式: (指标ID, 指标名称, 杀伤链阶段索引, 风险轴, 确信度, 证据类型)
+FORENSIC_INDICATORS = {
+    # ====== 攻击工具与武器化 ======
+    "exploit_search": {
+        "name": "漏洞利用搜索",
+        "kill_chain": 0,        # 侦察
+        "axis": "attack_tooling",
+        "confidence": "MEDIUM",
+        "desc": "搜索CVE/漏洞/渗透测试相关关键词",
+    },
+    "hacktool_download": {
+        "name": "攻击工具下载",
+        "kill_chain": 1,        # 武器化
+        "axis": "attack_tooling",
+        "confidence": "HIGH",
+        "desc": "下载已知黑客工具（exploit/payload/shell/malware）",
+    },
+    "malware_access": {
+        "name": "恶意软件接触",
+        "kill_chain": 2,        # 投递
+        "axis": "attack_tooling",
+        "confidence": "HIGH",
+        "desc": "访问已知恶意域名/IP或下载可执行载荷",
+    },
+    "crack_warez_use": {
+        "name": "破解/盗版工具",
+        "kill_chain": 0,
+        "axis": "attack_tooling",
+        "confidence": "LOW",
+        "desc": "搜索或下载破解软件/注册机——可能引入后门",
+    },
+    "piracy_resource": {
+        "name": "盗版资源站",
+        "kill_chain": 2,
+        "axis": "attack_tooling",
+        "confidence": "LOW",
+        "desc": "访问盗版/资源聚合站——高风险载荷投递渠道",
+    },
+
+    # ====== 侦查与信息收集 ======
+    "darkweb_access": {
+        "name": "暗网访问",
+        "kill_chain": 0,
+        "axis": "recon_intel",
+        "confidence": "HIGH",
+        "desc": "访问.onion暗网站点——常用于匿名交易或情报收集",
+    },
+    "osint_research": {
+        "name": "社工/人肉搜索",
+        "kill_chain": 0,
+        "axis": "recon_intel",
+        "confidence": "MEDIUM",
+        "desc": "搜索社工查询、个人信息搜集相关内容",
+    },
+    "security_research": {
+        "name": "安全技术研究",
+        "kill_chain": 0,
+        "axis": "recon_intel",
+        "confidence": "LOW",
+        "desc": "访问安全分析平台（VirusTotal/Hybrid-Analysis/Shodan）——可能是安全从业者",
+    },
+    "vpn_circumvention": {
+        "name": "翻墙/代理工具",
+        "kill_chain": 6,        # 反取证
+        "axis": "anti_forensics",
+        "confidence": "LOW",
+        "desc": "搜索VPN/代理/翻墙工具——意图隐匿网络身份",
+    },
+
+    # ====== 凭证窃取与持久化 ======
+    "credential_harvest": {
+        "name": "凭证收集痕迹",
+        "kill_chain": 6,
+        "axis": "credential_persist",
+        "confidence": "MEDIUM",
+        "desc": "大量登录凭据存储（可能密码复用/撞库风险）",
+    },
+    "phishing_exposure": {
+        "name": "钓鱼/欺诈站点",
+        "kill_chain": 3,        # 利用
+        "axis": "credential_persist",
+        "confidence": "HIGH",
+        "desc": "访问已知钓鱼/欺诈域名",
+    },
+    "anomalous_logins": {
+        "name": "异常登录行为",
+        "kill_chain": 5,        # C2
+        "axis": "credential_persist",
+        "confidence": "MEDIUM",
+        "desc": "登录行为模式异常（多浏览器/多账户）",
+    },
+    "pastebin_use": {
+        "name": "Pastebin数据交换",
+        "kill_chain": 5,
+        "axis": "credential_persist",
+        "confidence": "MEDIUM",
+        "desc": "访问Pastebin/文本分享——常用于传递泄露数据",
+    },
+
+    # ====== 反取证与隐匿 ======
+    "incognito_suspect": {
+        "name": "疑似无痕模式",
+        "kill_chain": 6,
+        "axis": "anti_forensics",
+        "confidence": "LOW",
+        "desc": "未发现会话记录——可能使用隐私模式规避追踪",
+    },
+    "encrypted_transfer": {
+        "name": "加密传输通道",
+        "kill_chain": 5,
+        "axis": "anti_forensics",
+        "confidence": "MEDIUM",
+        "desc": "使用MEGA等端到端加密网盘——规避流量审查",
+    },
+    "multi_browser_masking": {
+        "name": "多浏览器身份分散",
+        "kill_chain": 6,
+        "axis": "anti_forensics",
+        "confidence": "LOW",
+        "desc": "同时使用3个以上浏览器——可能多身份隔离",
+    },
+    "automation_behavior": {
+        "name": "自动化浏览行为",
+        "kill_chain": 6,
+        "axis": "anti_forensics",
+        "confidence": "MEDIUM",
+        "desc": "浏览速度异常（>40%快速跳转或连续>10次快速浏览）——疑似脚本操作",
+    },
+    "late_night_activity": {
+        "name": "深夜异常活跃",
+        "kill_chain": 6,
+        "axis": "anti_forensics",
+        "confidence": "LOW",
+        "desc": "00:00-05:00浏览占比超30%——偏离正常作息",
+    },
+}
+
+# ---- 证据等级权重 ----
+# 各确信度级别的得分权重
+EVIDENCE_WEIGHTS = {
+    "HIGH":   25,     # 直接证据——可直接作为取证依据
+    "MEDIUM": 15,     # 间接证据——需结合上下文
+    "LOW":    5,      # 弱信号——仅作为辅助参考
+}
+
+# ---- 交叉验证加成 ----
+# 同一杀伤链阶段出现 ≥CORROBORATE_THRESHOLD 个独立指标时，额外加成
+CORROBORATE_THRESHOLD = 3      # 同一阶段累积3条以上=交叉验证
+CORROBORATE_BONUS = 10         # 交叉验证额外得分
+
+# ---- 风险等级阈值 ----
+RISK_LEVELS = [
+    (70, "高风险",  "发现多项高确信度的恶意行为证据，建议立即启动应急响应"),   # noqa
+    (40, "中风险",  "存在可疑行为指标，需人工复核确认"),                     # noqa
+    (0,  "低风险",  "未发现明确威胁指标，行为模式大致正常"),                  # noqa
+]
