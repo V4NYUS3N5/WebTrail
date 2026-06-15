@@ -1,106 +1,82 @@
 """
-CLI 命令行入口（Layer 3 — 入口层）
-
-支持的命令行参数：
-  -o/--output  保存报告到指定文件
-  --json       导出原始数据为 JSON
-  -q/--quiet   静默模式（仅输出摘要）
-  -g/--gui     启动图形界面
-
-执行流程：
-  参数解析 → 三路提取 → 取证报告 → 智能分析 → 输出/保存
+WebTrail - 浏览器数字取证工具
+===============================
+用法:
+    python main.py                          # 全量分析（命令行模式）
+    python main.py --gui                    # 图形界面模式
+    python main.py --browser Chrome         # 仅分析 Chrome
+    python main.py --output /path/to/case   # 指定输出目录
 """
+from __future__ import annotations
+
 import argparse
-import json
-import sys
-import os
 import logging
+import sys
+from pathlib import Path
 
-# 确保以包模式运行
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from extraction import ChromiumExtractor, FirefoxExtractor, SystemExtractor
-from reporting import generate, format_analysis
-from analysis import analyze
+import config
+from core.pipeline import (
+    create_extractors,
+    collect_evidence_hashes,
+    run_extraction,
+    run_profiling,
+    print_summary,
+)
+from output.writer import write_report
 
-_log = logging.getLogger("WebTrail.main")
-
-BANNER = """
-╔══════════════════════════════════════════════════════════╗
-║           WebTrail 浏览器痕迹取证提取工具                    ║
-║           v1.0  |  Windows 10/11                         ║
-╚══════════════════════════════════════════════════════════╝
-"""
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%S",
+)
 
 
 def main():
-    p = argparse.ArgumentParser(description="WebTrail - 浏览器痕迹取证提取工具")
-    p.add_argument("--output", "-o", help="保存报告到指定文件")
-    p.add_argument("--json", help="导出JSON到指定文件")
-    p.add_argument("--quiet", "-q", action="store_true", help="静默模式")
-    p.add_argument("--gui", "-g", action="store_true", help="启动图形界面")
-    args = p.parse_args()
+    parser = argparse.ArgumentParser(
+        description="WebTrail - 浏览器数字取证与用户画像工具",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="示例:\n"
+               "  python main.py                     # 全量分析\n"
+               "  python main.py --gui               # 图形界面\n"
+               "  python main.py --browser Chrome    # 仅 Chrome",
+    )
+    parser.add_argument("--browser", choices=["Chrome", "Firefox", "Edge"],
+                        default=None)
+    parser.add_argument("--output", type=Path, default=config.OUTPUT_DIR)
+    parser.add_argument("--no-profile", action="store_true")
+    parser.add_argument("--quiet", action="store_true")
+    parser.add_argument("--gui", action="store_true", help="启动图形界面")
+    args = parser.parse_args()
 
     if args.gui:
-        from gui import launch
+        from gui.app import launch
         launch()
         return
 
-    try:
-        sys.stdout.reconfigure(encoding='utf-8')
-    except Exception:
-        _log.debug("stdout reconfigure 失败（非关键）", exc_info=True)
+    if args.quiet:
+        logging.getLogger().setLevel(logging.WARNING)
 
-    if not args.quiet:
-        print(BANNER)
+    args.output.mkdir(parents=True, exist_ok=True)
 
-    # 提取
-    traces = (ChromiumExtractor().extract()
-              + FirefoxExtractor().extract()
-              + SystemExtractor().extract())
+    extractors = create_extractors(args.browser)
+    if not extractors:
+        print("错误：未检测到任何浏览器数据。")
+        sys.exit(1)
 
-    if not traces:
-        print("\n[!] 未提取到浏览器痕迹")
-        return
+    evidence_hashes = collect_evidence_hashes(extractors)
+    records = run_extraction(extractors)
 
-    report = generate(traces)
+    if not records:
+        print("未提取到任何痕迹记录，请确认浏览器已安装且有浏览活动。")
+        sys.exit(0)
 
-    if args.output:
-        with open(args.output, 'w', encoding='utf-8') as f:
-            f.write(report)
-        print(f"[+] 报告已保存: {args.output}")
-    else:
-        _safe_print(report)
+    profile = {} if args.no_profile else run_profiling(records)
+    report_dir = write_report(records, profile, evidence_hashes, args.output)
 
-    sus = sum(1 for t in traces if t.suspicious)
-    print(f"\n[+] 总计 {len(traces)} 条痕迹, 其中可疑 {sus} 条")
+    if profile:
+        print_summary(profile)
 
-    # 智能分析
-    print("\n[+] 正在执行智能分析...")
-    try:
-        analysis_result = analyze(traces)
-        analysis_text = format_analysis(analysis_result)
-        if args.output:
-            with open(args.output, 'a', encoding='utf-8') as f:
-                f.write(analysis_text)
-            print(f"[+] 分析结果已追加到: {args.output}")
-        else:
-            _safe_print(analysis_text)
-    except Exception as e:
-        print(f"[!] 分析异常: {e}")
-
-    if args.json:
-        data = [t.to_dict() for t in traces]
-        with open(args.json, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        print(f"[+] JSON已保存: {args.json}")
-
-
-def _safe_print(text: str):
-    try:
-        print(text)
-    except UnicodeEncodeError:
-        print(text.encode('utf-8', errors='replace')
-              .decode('utf-8', errors='replace'))
+    print(f"\n完整报告已生成: {report_dir}")
 
 
 if __name__ == "__main__":
